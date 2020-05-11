@@ -1,6 +1,12 @@
 package q003;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Q003 集計と並べ替え
@@ -33,5 +39,25 @@ public class Q003 {
     private static InputStream openDataFile() {
         return Q003.class.getResourceAsStream("data.txt");
     }
+
+    public static void main(String[] args) {
+
+        try (InputStream is = openDataFile()) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            Stream<String> lines = br.lines();
+
+            Map<String, Long> map =
+                    lines.map(line -> line.toLowerCase())
+                            .flatMap(line -> Arrays.stream(line.split(" ")))
+                            .map(word -> word.replaceAll("(,|\\.|,|;)", ""))
+                            .filter(word -> !"–".equals(word))
+                            .collect(Collectors.groupingBy(word -> word, Collectors.counting()));
+
+            map.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByKey()).forEach(System.out::println);
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
-// 完成までの時間: xx時間 xx分
+// 完成までの時間: 01時間 40分

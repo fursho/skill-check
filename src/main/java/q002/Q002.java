@@ -1,5 +1,8 @@
 package q002;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Q002 並べ替える
  *
@@ -45,5 +48,23 @@ public class Q002 {
             "14,林",
             "9,清水"
     };
+
+    public static class Member {
+        private int id;
+        private String name;
+
+        public Member(String data) {
+            String[] datas = data.split(",");
+            id = Integer.parseInt(datas[0]);
+            name = datas[1];
+        }
+    }
+
+    public static void main(String args[]) {
+        List<String> datas = Arrays.asList(dataList);
+        datas.stream().map(Member::new)
+                .sorted((val1, val2) -> {return val1.id - val2.id;})
+                .forEach((i) -> System.out.println(i.id + "," + i.name));
+    }
 }
-// 完成までの時間: xx時間 xx分
+// 完成までの時間: 00時間 09分
